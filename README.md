@@ -46,15 +46,16 @@ docker run -v $PWD:/app cnattention-tf
 
 
 ## Notes
+
 - Bag construction matches the original logic (majority-class soft label for train; majority hard label for val).
 - Attention weights are retrieved via the "alpha" layer and used for linear attribution to instances and genes.
 - For external cohorts, provide CSVs with the same gene columns and a `cancer_label` column.
-```
+
 
 
 # Visualization
 
 The users can visualize the selected CNA patterns on [progenetix](https://progenetix.org/) database by simply type in the feature gene names of a specific cancer type.
 
-![sample plot](https://github.com/ziyingyang96/cnv-signature/blob/main/sampleplots.png)
+![sample plot](https://github.com/baudisgroup/CNAttention/blob/main/sampleplots.png)
 
