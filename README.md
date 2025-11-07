@@ -2,7 +2,7 @@
 
 This tool aims to uncovering copy number abbresion (CNA) patterns of pan-cancer based on large CNA data from progenetix database.
 
-![pipeline_diagram](https://github.com/ziyingyang96/cnv-signature/blob/main/workflow.png)
+![pipeline_diagram](https://github.com/baudisgroup/CNAttention/blob/main/workflow.png)
 
 ## Repository layout
 ```
