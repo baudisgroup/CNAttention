@@ -4,22 +4,52 @@ This tool aims to uncovering copy number abbresion (CNA) patterns of pan-cancer 
 
 ![pipeline_diagram](https://github.com/ziyingyang96/cnv-signature/blob/main/workflow.png)
 
-
-# Installation
-Firstly you have to make sure that you have all dependencies in place. The simplest way to do so, is to use anaconda.
-
-You can create an anaconda environment called cnattention.
-
-```    
-conda env create -f requirements.txt
-conda activate cnattention
+## Repository layout
+```
+CNAttention-TF/
+├─ configs/
+│ └─ config.yaml
+├─ data/ # (put your CSVs here; not versioned)
+├─ scr/
+│ ├─ make_bags.py # optional: precompute bag indices (npz)
+│ ├─ train.py # train MIL attention model
+│ ├─ signatures.py # derive per-cancer DEL/DUP gene signatures
+│ ├─ data_io.py # load/align data, label encoding
+│ ├─ bags.py # create train/val/external bags
+│ ├─ mil_layers.py # Keras MIL attention layer
+│ ├─ model.py # build Keras model (shared MLP + attention)
+│ ├─ train_utils.py # class weights, callbacks, seed, metrics
+│ ├─ attribution.py # attention × probs → per-instance / per-gene
+├─ environment.yml
+├─ requirements.txt
+├─ Dockerfile
+├─ README.md
+└─ LICENSE
 ```
 
-# Running
 
-`python CNAttention.py`
+---
+## Quick start (Conda)
+```bash
+conda env create -f environment.yml && conda activate cnattention-tf
+python scripts/train.py --config configs/config.yaml
+python scripts/eval.py --config configs/config.yaml
+python scripts/signatures.py --config configs/config.yaml --topn 100
+```
 
-The script `CNAttention.py` takes the CNA profiles as input and output the attention parameters for all CNA features, accuracy of bag and instance classification. The users can adjust the number of selected features as the final pattern of different cancers.
+
+## Docker
+```bash
+docker build -t cnattention-tf .
+docker run -v $PWD:/app cnattention-tf
+```
+
+
+## Notes
+- Bag construction matches the original logic (majority-class soft label for train; majority hard label for val).
+- Attention weights are retrieved via the "alpha" layer and used for linear attribution to instances and genes.
+- For external cohorts, provide CSVs with the same gene columns and a `cancer_label` column.
+```
 
 
 # Visualization
